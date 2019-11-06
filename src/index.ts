@@ -1,5 +1,6 @@
 import express from 'express'
 import bunyan from 'bunyan'
+import multer from 'multer'
 import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -81,8 +82,9 @@ export const createServer = (config: ServerConfig) => {
   })
 
   const db = connectToDB(config.db)
+  const uploads = multer()
 
-  const api = createAPI(config.domains)
+  const api = createAPI(config.domains, uploads)
 
   const context = {
     log,
@@ -93,7 +95,7 @@ export const createServer = (config: ServerConfig) => {
   const server = setContext(express(), context)
 
   /**
-   * MIDDLEWARE
+   * PRE MIDDLEWARE
    */
   // Add all preware with our specific ones first
   addPreware(server, [
@@ -104,16 +106,37 @@ export const createServer = (config: ServerConfig) => {
   ])
 
   /**
-   * API
+   * STATIC FILES
+   */
+
+  if (config.staticDir) {
+    server.use(
+      express.static(config.staticDir, {
+        extensions: ['html']
+      })
+    )
+  }
+  /**
+   * CRUD API
    */
   server.use(config.apiPrefix || '/api', api)
 
   // Add any postware to our handlers
-  addPostware(server, config.postware || [])
 
+  /**
+   * CRUD VIEWS
+   */
   createViews(server, config.domains, config.templateDir, config.tempalteType)
 
+  /**
+   * PAGES
+   */
   server.use(createPages(config.pages || {}))
+
+  /**
+   * POST MIDDLEWARE
+   */
+  addPostware(server, config.postware || [])
 
   /**
    * RESPONSE HANDLER

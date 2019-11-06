@@ -41,16 +41,33 @@ declare global {
   }
 
   export interface SchemaConfig extends Schema {
-    hashed?: boolean
+    acceptFiles?: boolean
+    acceptAnyFiles?: boolean
+    fileKeys?: {
+      name: string
+      maxCount?: number
+    }
+  }
+
+  export interface Formatter {
+    input?: (req: express.Request) => any
+    output?: (data: any) => any
   }
 
   export interface SchemasConfig {
-    create?: Schema
-    readOne?: Schema
-    readMany?: Schema
-    update?: Schema
-    destroy?: Schema
+    create?: SchemaConfig
+    readOne?: SchemaConfig
+    readMany?: SchemaConfig
+    update?: SchemaConfig
+    destroy?: SchemaConfig
     keys?: string | Array<string>
+    formatters: {
+      create: Formatter
+      update: Formatter
+      readMany: Formatter
+      readOne: Formatter
+      destroy: Formatter
+    }
   }
 
   export interface DomainConfig {
@@ -72,6 +89,7 @@ declare global {
     onResult: express.RequestHandler
     domains: DomainsConfig
     apiPrefix: string
+    staticDir?: string
     templateDir?: string
     tempalteType?: string
     pages?: PagesConfig

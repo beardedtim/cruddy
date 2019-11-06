@@ -20,6 +20,8 @@ const server = createServer({
     // How this service will log and explain itself
     serviceName: 'CRUDDY_EXAMPLE',
     apiPrefix: '/api',
+    // Where are we serving static content from?
+    staticDir: 'public',
     // Path to the directory that holds all templates
     templateDir: './views',
     // What type of templating engine are you using?
@@ -28,6 +30,38 @@ const server = createServer({
       // The name to add to the api
       users: {
         schemas: {
+          // We can format the input and output of our requests
+          // using the formatters block inside of schemas of the
+          // domain
+          formatters: {
+            /**
+             * This is the same keys as the schemas of create, readOne, readMany, update, destroy
+             * and each key has an input and output function
+             */
+            create: {
+              // This is given the Request object
+              input: async req => {
+                const { password, ...user } = req
+                const hashed = await hashPassword(password)
+
+                return {
+                  ...user,
+                  password: hashed
+                }
+              }
+            },
+            readMany: {
+              output: users => ...
+            },
+            update: {
+              // This is given whatever the DB call would return
+              // since it's an update, it will be a single user
+              output: user => ({
+                ...user,
+                some_formatted_key: true
+              })
+            }
+          }
           // Create Read Update Destroy schemas.
           // All schemas default to accepting _anything_
           create: {

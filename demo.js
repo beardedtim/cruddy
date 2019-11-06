@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bcrypt = require('bcrypt')
 
 const { createServer } = require('./dist')
 
@@ -6,6 +7,7 @@ const config = {
   serviceName: 'MY_SERVICE',
   logLevel: 'trace',
   apiPrefix: '/api',
+  staticDir: 'public',
   templateDir: 'templates',
   tempalteType: 'pug',
   db: {
@@ -35,20 +37,28 @@ const config = {
               type: 'string',
               required: true
             }
+          },
+          acceptFiles: true
+        },
+        formatters: {
+          create: {
+            input: async req => {
+              const { password, ...user } = req.body
+              const hashed = await bcrypt.hash(password, 10)
+
+              return {
+                ...user,
+                password: hashed
+              }
+            },
+            output: user => {
+              console.dir(user)
+
+              return user
+            }
           }
         },
-        readMany: {
-          title: 'ReadManyUsersQuery',
-          description: 'The possible query arguments for the Read Many Query',
-          type: 'object',
-          properties: {
-            email: {
-              type: 'string',
-              format: 'email'
-            }
-          },
-          additionalProperties: false
-        }
+        keys: ['id', 'email', 'username', 'created_at', 'last_updated']
       },
       views: {
         create: {
