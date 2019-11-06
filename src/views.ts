@@ -53,7 +53,7 @@ const applyView = (
   /**
    * READ MANY
    */
-  server.get(domain, async (req, res, next) => {
+  server.get(`/${domain}`, async (req, res, next) => {
     try {
       const { db } = req.context
       const { limit = 50, offset = 0 } = req.query

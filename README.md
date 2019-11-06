@@ -144,3 +144,57 @@ const server = createServer({
 
 server.listen(5000, () => server.log.info('Service has started'))
 ```
+
+## Exposed Routes
+
+Given a `domain` object of
+
+```js
+const domain = {
+  users: {
+    schemas: {},
+    views: {}
+  },
+  posts: {
+    schemas: {},
+    views: {}
+  }
+}
+```
+
+this tooling will create the following routes:
+
+```bash
+# View Specific
+GET /users
+GET /users/create
+GET /users/:id
+GET /users/:id/edit
+GET /users/:id/destroy
+
+GET /posts
+GET /posts/create
+GET /posts/:id
+GET /posts/:id/edit
+GET /posts/:id/destroy
+
+
+# API Specific
+GET /api/users
+POST /api/users
+GET /api/users/:id
+PATCH /api/users/:id
+DELETE /api/users/:id
+
+GET /api/posts
+POST /api/posts
+GET /api/posts/:id
+PATCH /api/posts/:id
+DELETE /api/posts/:id
+```
+
+It will ensure that the `body` (_for `patch` or `post` requests_) or `query` (_for all other requests_) of the requests passes the schema for the API
+endpoints called out by the `schemas` key. It will also call the templates called out by `views` key.
+
+It will return the keys per the configuration in the `schema` OR allow you to select keys via the `query` args. However, you can choose not to allow
+the `keys` query arg via the JSON Schema
