@@ -59,6 +59,18 @@ const config = {
         }
       }
     }
+  },
+  pages: {
+    homePage: {
+      template: 'home',
+      path: '/',
+      data: async context => {
+        const data = await context.db.raw('SELECT NOW()')
+        console.dir(data)
+
+        return data
+      }
+    }
   }
 }
 

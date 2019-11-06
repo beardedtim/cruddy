@@ -3,11 +3,11 @@ import bunyan from 'bunyan'
 import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
-import bodyParser from 'body-parser'
 
 import connectToDB from './db'
 import createAPI from './api'
 import createViews from './views'
+import createPages from './pages'
 
 const setContext = (
   server: express.Application,
@@ -112,6 +112,8 @@ export const createServer = (config: ServerConfig) => {
   addPostware(server, config.postware || [])
 
   createViews(server, config.domains, config.templateDir, config.tempalteType)
+
+  server.use(createPages(config.pages || {}))
 
   /**
    * RESPONSE HANDLER

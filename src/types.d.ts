@@ -4,6 +4,16 @@ import Knex from 'knex'
 import { Schema } from 'jsonschema'
 
 declare global {
+  export interface PageConfig {
+    path: string
+    template: string
+    data?: (ctx: RequestContext) => Promise<any>
+  }
+
+  export interface PagesConfig {
+    [x: string]: PageConfig
+  }
+
   export interface DBConfig {
     client: string
     connection:
@@ -64,6 +74,7 @@ declare global {
     apiPrefix: string
     templateDir?: string
     tempalteType?: string
+    pages?: PagesConfig
   }
 
   export interface RequestContext {
