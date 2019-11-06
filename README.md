@@ -10,7 +10,7 @@
 > the docker-compose file in this repo. How to do that is beyond this package's forte.
 
 ```javascript
-const { createServer } = require('cruddy')
+const { createServer } = require('@beardedtim/cruddy')
 
 const server = createServer({
   /**
