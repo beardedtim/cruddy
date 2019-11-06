@@ -55,16 +55,19 @@ const defaultErrorHandler: express.ErrorRequestHandler = (
 
   req.context.log.error({ err: error })
 
-  res.status(status).json({
-    error: err
+  res.status(error.status || status).json({
+    error: {
+      message: err.message
+    }
   })
 }
 
 const defaultSuccessHandler: express.RequestHandler = (_, res) => {
-  const { data, status = 200, meta, links } = res.locals
+  const { data, error, status = 200, meta, links } = res.locals
 
   res.status(status).json({
     data,
+    error,
     meta,
     links
   })

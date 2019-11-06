@@ -118,7 +118,7 @@ const server = createServer({
     connection: {
       host: 'abc.com',
       port: 5432,
-      username: 'username',
+      user: 'username',
       password: '123!',
       database: 'enough'
     }

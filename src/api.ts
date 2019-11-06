@@ -1,5 +1,5 @@
 import express from 'express'
-import { validate } from 'jsonschema'
+import validate from './validateSchema'
 
 const applyHandlers = (
   config: SchemasConfig,
@@ -22,10 +22,9 @@ const applyHandlers = (
           .offset(offset)
 
         res.locals.data = items
-      } catch (e) {
-        res.locals.errors = e
-      } finally {
         next()
+      } catch (e) {
+        next(e)
       }
     })
     .post('/', async (req, res, next) => {
@@ -42,10 +41,10 @@ const applyHandlers = (
           .returning(config.keys || '*')
 
         res.locals.data = item
+
+        return next()
       } catch (e) {
-        res.locals.errors = e
-      } finally {
-        next()
+        next(e)
       }
     })
     .get('/:id', async (req, res, next) => {
@@ -66,10 +65,10 @@ const applyHandlers = (
           .offset(offset)
 
         res.locals.data = item
+
+        return next()
       } catch (e) {
-        res.locals.errors = e
-      } finally {
-        next()
+        next(e)
       }
     })
     .patch('/:id', async (req, res, next) => {
@@ -89,10 +88,10 @@ const applyHandlers = (
           .returning(config.keys || '*')
 
         res.locals.data = updated
+
+        return next()
       } catch (e) {
-        res.locals.errors = e
-      } finally {
-        next()
+        next(e)
       }
     })
     .delete('/:id', async (req, res, next) => {
@@ -111,10 +110,10 @@ const applyHandlers = (
           .returning(config.keys || '*')
 
         res.locals.data = deleted
+
+        return next()
       } catch (e) {
-        res.locals.errors = e
-      } finally {
-        next()
+        next(e)
       }
     })
 
@@ -130,7 +129,7 @@ export const createAPI = (config: DomainsConfig): express.Router => {
   const api = express.Router()
 
   for (const [domain, configuration] of Object.entries(config)) {
-    api.use(domain, createDomainFromConfig(configuration, domain))
+    api.use(`/${domain}`, createDomainFromConfig(configuration, domain))
   }
 
   return api

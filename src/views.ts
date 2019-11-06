@@ -135,8 +135,6 @@ export const createViews = (
   templateDir: string = './views',
   templateType: string = 'pug'
 ): express.Application => {
-  console.dir(templateDir)
-  console.dir(templateType)
   /**
    * VIEW ENGINE
    *
@@ -146,8 +144,6 @@ export const createViews = (
   server.set('view engine', templateType)
 
   for (const [domain, configuration] of Object.entries(config)) {
-    console.dir(domain)
-    console.dir(configuration)
     applyView(server, domain, configuration.views)
   }
 

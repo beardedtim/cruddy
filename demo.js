@@ -5,7 +5,6 @@ const { createServer } = require('./dist')
 const config = {
   serviceName: 'MY_SERVICE',
   logLevel: 'trace',
-  dbConfig,
   apiPrefix: '/api',
   templateDir: 'templates',
   tempalteType: 'pug',
@@ -14,7 +13,7 @@ const config = {
     connection: {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
-      username: process.env.DB_USER,
+      user: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME
     }
@@ -37,6 +36,18 @@ const config = {
               required: true
             }
           }
+        },
+        readMany: {
+          title: 'ReadManyUsersQuery',
+          description: 'The possible query arguments for the Read Many Query',
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email'
+            }
+          },
+          additionalProperties: false
         }
       },
       views: {
