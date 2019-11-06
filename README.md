@@ -108,6 +108,15 @@ const server = createServer({
     }
   },
   /**
+   * The pages that we want to serve that aren't based
+   * on CRUD
+   */
+  pages: {
+    template: 'some-template',
+    path: '/',
+    data: context => Promise.resolve({})
+  },
+  /**
    * The configuration object for the DB. Currently gets passed
    * as-is to Knex
    */
