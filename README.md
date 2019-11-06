@@ -7,7 +7,7 @@
 ## Usage
 
 ```javascript
-const { createServer } = require("cruddy");
+const { createServer } = require('cruddy')
 
 const server = createServer({
   /**
@@ -15,8 +15,12 @@ const server = createServer({
    */
   config: {
     // How this service will log and explain itself
-    serviceName: "CRUDDY_EXAMPLE",
-    apiPrefix: "/api",
+    serviceName: 'CRUDDY_EXAMPLE',
+    apiPrefix: '/api',
+    // Path to the directory that holds all templates
+    templateDir: './views',
+    // What type of templating engine are you using?
+    templateType: 'pug',
     domains: {
       // The name to add to the api
       users: {
@@ -29,10 +33,16 @@ const server = createServer({
              * for create
              */
           },
-          read: {
+          readMany: {
             /**
              * Some JSON Schema describing the query expected
-             * for read
+             * for readMany
+             */
+          },
+          readOne: {
+            /**
+             * Some JSON Schema describing the query expected
+             * for readOne
              */
           },
           update: {
@@ -46,8 +56,18 @@ const server = createServer({
              * Some JSON Schema describing the query expected
              * for delete
              */
-          }
+          },
+          /**
+           * Sometimes we only want to return certain keys from this
+           * item. This allows us to set that. It can be a single key
+           * or an array of keys. '*' means all keys
+           *
+           * We don't want to return the email _EVER_ from the API
+           * so we create a list of keys that we want to return
+           */
+          keys: ['id', 'email', 'created_at', 'last_updated']
         },
+
         views: {
           // Create Read Update Destroy views.
           create: {
@@ -56,10 +76,16 @@ const server = createServer({
              * for create
              */
           },
-          read: {
+          readOne: {
             /**
              * Some View Schema describing the query expected
-             * for read
+             * for reading one item
+             */
+          },
+          readMany: {
+            /**
+             * Some View Schema describing the query expected
+             * for reading many items
              */
           },
           update: {
@@ -79,6 +105,22 @@ const server = createServer({
     }
   },
   /**
+   * The configuration object for the DB. Currently gets passed
+   * as-is to Knex
+   */
+  db: {
+    client: 'postgres',
+    // You can also use a string here if you have the URL
+    // postgres://hello.com:2345/something
+    connection: {
+      host: 'abc.com',
+      port: 5432,
+      username: 'username',
+      password: '123!',
+      database: 'enough'
+    }
+  },
+  /**
    * Any middleware that we want to be ran before any of the handlers
    * but after the global middleware such as CORS/Helmet/etc
    */
@@ -95,7 +137,7 @@ const server = createServer({
    * How you want to format any data before sending it to the client
    */
   onSuccess: () => {}
-});
+})
 
-server.listen(5000, () => server.log.info("Service has started"));
+server.listen(5000, () => server.log.info('Service has started'))
 ```
