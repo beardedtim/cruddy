@@ -1,5 +1,5 @@
 {
-  "name": "cruddy",
+  "name": "@beardedtim/cruddy",
   "version": "0.0.1",
   "description": "A CRUD server builder",
   "main": "dist/index.js",
