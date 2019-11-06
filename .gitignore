@@ -1,0 +1,21 @@
+# Dev Dirs
+node_modules/
+coverage/
+.cache/
+
+# Dev Artifacts
+dist/
+build/
+
+# VS Code
+.vs/
+.vscode/
+
+# Private Files
+.env
+*.private.*
+
+# Logs
+*.log.*
+*.log
+

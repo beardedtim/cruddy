@@ -1,0 +1,33 @@
+{
+  "name": "cruddy",
+  "version": "0.0.1",
+  "description": "A CRUD server builder",
+  "main": "dist/index.js",
+  "author": "Tim Roberts <olpattystew@gmail.com>",
+  "repository": "git@github.com:beardedtim/cruddy.git",
+  "license": "MIT",
+  "private": false,
+  "engines": {
+    "node": "^13",
+    "yarn": "^1.19"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules && yarn"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.6",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.7.2"
+  }
+}
