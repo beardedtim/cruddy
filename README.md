@@ -6,6 +6,9 @@
 
 ## Usage
 
+> You can find a working demo at `demo.js` but you will have to ensure that your DB is working or use
+> the docker-compose file in this repo. How to do that is beyond this package's forte.
+
 ```javascript
 const { createServer } = require('cruddy')
 

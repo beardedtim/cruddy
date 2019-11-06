@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const { createServer } = require('./dist')
-const dbConfig = require('./knexfile')
 
 const config = {
   serviceName: 'MY_SERVICE',
@@ -10,7 +9,16 @@ const config = {
   apiPrefix: '/api',
   templateDir: 'templates',
   tempalteType: 'pug',
-  db: dbConfig,
+  db: {
+    client: 'postgres',
+    connection: {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME
+    }
+  },
   domains: {
     users: {
       schemas: {
